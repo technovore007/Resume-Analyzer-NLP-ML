@@ -1,22 +1,24 @@
 # Resume Analyzer using NLP & Machine Learning
 
-## Overview
+---
 
-This project implements a complete **Resume Analyzer system** using Natural Language Processing (NLP) and Machine Learning techniques. The system processes raw resume text and classifies it into predefined job categories.
+## 📌 Overview
 
-The project follows a structured pipeline:
+This project implements a complete **Resume Analyzer system** using **Natural Language Processing (NLP)** and **Machine Learning** techniques.
 
-* NLP preprocessing of resume text
-* Feature extraction using TF-IDF
-* Training multiple machine learning models
-* Model evaluation and comparison
-* Selection and saving of the best-performing model
+The system processes raw resume text and classifies it into predefined job categories such as HR, Engineering, Finance, and IT.
 
 ---
 
-## Problem Statement
+## 🖼️ System Workflow
 
-Given a resume, the goal is to automatically predict its **job category** (e.g., HR, Engineering, Finance, IT, etc.).
+![Workflow](images/workflow.png)
+
+---
+
+## 🎯 Problem Statement
+
+Given a resume, the goal is to automatically predict its **job category**.
 
 This is a:
 
@@ -25,60 +27,60 @@ This is a:
 
 ---
 
-## Dataset
+## 📊 Dataset
 
-The dataset contains **2484 resumes** across **24 job categories**.
+* Total resumes: **2484**
+* Total categories: **24**
 
-### Columns:
+### Features:
 
-* `Final_Resume` → Cleaned resume text (input feature)
-* `Category` → Job category (target label)
+* `Final_Resume` → Cleaned resume text
+* `Category` → Target label
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-ml project/
+ml-project/
 │
 ├── resume.csv
 ├── resume_cleaned.csv
 │
-├── notebook1_nlp.ipynb        # NLP preprocessing pipeline
-├── notebook2_ml.ipynb         # ML training and evaluation
+├── notebook1_nlp.ipynb
+├── notebook2_ml.ipynb
 │
-└── output/
-    ├── model.pkl
-    ├── vectorizer.pkl
-    └── encoder.pkl
+├── output/
+│   ├── model.pkl
+│   ├── vectorizer.pkl
+│   └── encoder.pkl
+│
+└── images/
+    ├── workflow.png
+    ├── confusion_matrix.png
+    └── results.png
 ```
 
 ---
 
-## NLP Pipeline (Notebook 1)
+## 🧠 NLP Pipeline
 
-The raw resume text is processed using the following steps:
+![NLP Pipeline](images/workflow.png)
+
+Steps performed:
 
 1. Text Cleaning
 
    * Lowercasing
-   * Removal of URLs, punctuation, and numbers
+   * Removing URLs, punctuation, numbers
 
 2. Tokenization
 
-   * Splitting text into words
-
 3. Stopword Removal
-
-   * Removing non-informative words
 
 4. Lemmatization
 
-   * Converting words to base form
-
-5. Reconstruction
-
-   * Converting processed tokens back to text
+5. Text Reconstruction
 
 Output:
 
@@ -88,16 +90,17 @@ resume_cleaned.csv
 
 ---
 
-## Feature Extraction
+## ⚙️ Feature Extraction
 
-TF-IDF (Term Frequency – Inverse Document Frequency) is used to convert text into numerical vectors.
+TF-IDF (Term Frequency – Inverse Document Frequency):
 
-* Max features: 5000
+* Converts text → numerical vectors
+* Max features: **5000**
 * Sparse high-dimensional representation
 
 ---
 
-## Machine Learning Models
+## 🤖 Machine Learning Models
 
 The following models were trained and evaluated:
 
@@ -108,9 +111,11 @@ The following models were trained and evaluated:
 
 ---
 
-## Evaluation Metrics
+## 📈 Model Evaluation
 
-Each model was evaluated using:
+![Confusion Matrix](images/confusion_matrix.png)
+
+Metrics used:
 
 * Accuracy
 * Precision (Weighted)
@@ -121,7 +126,7 @@ Each model was evaluated using:
 
 ---
 
-## Overfitting Analysis
+## 📊 Overfitting Analysis
 
 | Model         | Behavior     |
 | ------------- | ------------ |
@@ -132,7 +137,7 @@ Each model was evaluated using:
 
 ---
 
-## Final Model Selection
+## 🏆 Final Model Selection
 
 **Support Vector Machine (SVM)** was selected as the best model due to:
 
@@ -142,9 +147,7 @@ Each model was evaluated using:
 
 ---
 
-## Saved Artifacts
-
-The following files are saved for deployment:
+## 💾 Saved Artifacts
 
 * `model.pkl` → Trained SVM model
 * `vectorizer.pkl` → TF-IDF transformer
@@ -152,47 +155,55 @@ The following files are saved for deployment:
 
 ---
 
-## How It Works
+## 🔄 How It Works
 
 ```
 Input Resume
     ↓
-Text Cleaning (NLP)
+Text Cleaning
     ↓
 TF-IDF Vectorization
     ↓
-SVM Model Prediction
+SVM Prediction
     ↓
-Decoded Category Output
+Category Output
 ```
 
 ---
 
-## Key Concepts Covered
+## 🧩 Key Concepts Covered
 
 * Natural Language Processing (NLP)
 * TF-IDF Vectorization
 * SVM, KNN, Decision Trees, ANN
-* Overfitting and Underfitting
+* Overfitting & Underfitting
 * Precision, Recall, F1 Score
 * Confusion Matrix
 * Model Deployment using Pickle
 
 ---
 
-## Future Work
+## 🚀 Future Work
 
-* Build Streamlit web application for real-time prediction
-
----
-
-## Author
-
-Mandeep Singh
-Shubham Raj
+* Build Streamlit web application
 
 ---
 
-## Conclusion
+## 👨‍💻 Authors
 
-This project demonstrates a complete end-to-end machine learning pipeline for text classification, combining NLP preprocessing with multiple classification algorithms to build an effective Resume Analyzer system.
+* Mandeep Singh
+* Shubham Raj
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+See the LICENSE file for details.
+
+---
+
+## 📌 Conclusion
+
+This project demonstrates a complete end-to-end machine learning pipeline for resume classification, combining NLP preprocessing with multiple models to build an effective Resume Analyzer system.

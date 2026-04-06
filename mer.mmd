@@ -1,0 +1,79 @@
+flowchart TD
+
+%% =========================
+%% DATA INPUT
+%% =========================
+A[Raw Resume Dataset resume.csv] --> B[Data Loading]
+
+%% =========================
+%% NLP PIPELINE
+%% =========================
+B --> C[Text Cleaning Lowercase, Remove URLs, Punctuation, Numbers]
+C --> D[Tokenization Split into words]
+D --> E[Stopword Removal Remove common words]
+E --> F[Lemmatization Convert to base form]
+F --> G[Reconstruction Join tokens into text]
+
+G --> H[Clean Dataset resume_cleaned.csv]
+
+%% =========================
+%% ML PIPELINE
+%% =========================
+H --> I[Load Clean Data]
+I --> J[Feature & Label Split X = Resume Y = Category]
+
+J --> K[Label Encoding Category → Numeric]
+
+K --> L[Train-Test Split 80% Train / 20% Test]
+
+%% =========================
+%% FEATURE ENGINEERING
+%% =========================
+L --> M[TF-IDF Vectorization Text → Numerical Features]
+
+%% =========================
+%% MODEL TRAINING
+%% =========================
+M --> N1[SVM Model]
+M --> N2[KNN Model]
+M --> N3[Decision Tree]
+M --> N4[ANN Model]
+
+%% =========================
+%% EVALUATION
+%% =========================
+N1 --> O[Model Evaluation]
+N2 --> O
+N3 --> O
+N4 --> O
+
+O --> P[Metrics Accuracy, Precision, Recall, F1, Specificity]
+
+P --> Q[Confusion Matrix]
+
+%% =========================
+%% ANALYSIS
+%% =========================
+Q --> R[Overfitting Analysis Train vs Test]
+
+%% =========================
+%% MODEL SELECTION
+%% =========================
+R --> S[Select Best Model SVM]
+
+%% =========================
+%% SAVING ARTIFACTS
+%% =========================
+S --> T[Save Model model.pkl]
+S --> U[Save Vectorizer vectorizer.pkl]
+S --> V[Save Encoder encoder.pkl]
+
+%% =========================
+%% DEPLOYMENT
+%% =========================
+T --> W[Streamlit App]
+U --> W
+V --> W
+
+W --> X[User Input Resume]
+X --> Y[Prediction Output Job Category]
