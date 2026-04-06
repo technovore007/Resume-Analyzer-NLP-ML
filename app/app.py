@@ -1,15 +1,17 @@
 # ================================
-# Step 1: Imports
+# Imports
 # ================================
 
 import streamlit as st
 import joblib
 import re
 import string
+import pdfplumber
+import numpy as np
 
 
 # ================================
-# Step 2: Load Saved Artifacts
+# Load Models
 # ================================
 
 model = joblib.load("../output/model.pkl")
@@ -18,76 +20,119 @@ encoder = joblib.load("../output/encoder.pkl")
 
 
 # ================================
-# Step 3: Text Cleaning Function
-# (Same as Notebook NLP)
+# Text Cleaning (Same as training)
 # ================================
 
 def clean_text(text):
     text = str(text)
-    
-    # Lowercase
     text = text.lower()
-    
-    # Remove URLs
     text = re.sub(r'http\S+|www\S+', '', text)
-    
-    # Remove HTML tags
     text = re.sub(r'<.*?>', '', text)
-    
-    # Remove punctuation
     text = text.translate(str.maketrans('', '', string.punctuation))
-    
-    # Remove numbers
     text = re.sub(r'\d+', '', text)
-    
-    # Remove extra spaces
     text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+
+# ================================
+# PDF Text Extraction (NO OCR)
+# ================================
+
+def extract_text_from_pdf(uploaded_file):
+    text = ""
+    
+    with pdfplumber.open(uploaded_file) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text() or ""
     
     return text
 
 
 # ================================
-# Step 4: Streamlit UI Setup
+# Streamlit UI
 # ================================
 
 st.set_page_config(page_title="Resume Analyzer", layout="centered")
 
-st.title("Resume Analyzer")
-st.write("Paste a resume below to predict its job category")
+st.markdown("# Resume Analyzer")
+st.markdown("### NLP-based Job Category Prediction System")
+
+st.markdown("---")
 
 
 # ================================
-# Step 5: Input Box
+# Input Mode Selection
 # ================================
 
-resume_text = st.text_area("Enter Resume Text")
+input_mode = st.radio(
+    "Choose Input Method",
+    ["Paste Resume Text", "Upload PDF"],
+    horizontal=True
+)
+
+
+resume_text = ""
 
 
 # ================================
-# Step 6: Button (No logic yet)
+# Text Input
 # ================================
 
+if input_mode == "Paste Resume Text":
+    resume_text = st.text_area(
+        "Paste your resume below",
+        height=300,
+        placeholder="Enter resume content..."
+    )
+
+
 # ================================
-# Step 7: Prediction Logic
+# PDF Upload
+# ================================
+
+elif input_mode == "Upload PDF":
+    uploaded_file = st.file_uploader("Upload Resume (PDF only)", type=["pdf"])
+    
+    if uploaded_file is not None:
+        with st.spinner("Extracting text from PDF..."):
+            resume_text = extract_text_from_pdf(uploaded_file)
+        
+        if resume_text.strip() == "":
+            st.error("No readable text found in PDF. Please upload a text-based resume.")
+        else:
+            st.success("Text extracted successfully")
+            st.text_area("Preview (first 1000 characters)", resume_text[:1000], height=200)
+
+
+st.markdown("---")
+
+
+# ================================
+# Prediction
 # ================================
 
 if st.button("Analyze Resume"):
     
     if resume_text.strip() == "":
-        st.warning("Please enter resume text")
+        st.warning("Please provide resume input")
     
     else:
         # Clean text
         cleaned_text = clean_text(resume_text)
         
         # Vectorize
-        vectorized_text = vectorizer.transform([cleaned_text])
+        vectorized = vectorizer.transform([cleaned_text])
         
         # Predict
-        prediction = model.predict(vectorized_text)
+        prediction = model.predict(vectorized)
+        probabilities = model.predict_proba(vectorized)
         
-        # Decode label
-        predicted_category = encoder.inverse_transform(prediction)[0]
+        predicted_label = encoder.inverse_transform(prediction)[0]
+        confidence = np.max(probabilities)
         
-        # Display result
-        st.success(f"Predicted Category: {predicted_category}") 
+        # Output
+        st.markdown("## Prediction Result")
+        st.success(f"Predicted Category: {predicted_label}")
+        st.info(f"Confidence Score: {confidence:.2f}")
+        
+        st.caption("Model: Random Forest | Features: TF-IDF")
