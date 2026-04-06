@@ -192,7 +192,7 @@ Decoded Category Output
 ## Author
 
 Mandeep Singh
-B.Tech Student
+Shubham Raj
 
 ---
 
