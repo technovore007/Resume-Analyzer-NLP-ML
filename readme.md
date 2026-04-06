@@ -183,9 +183,6 @@ Decoded Category Output
 ## Future Work
 
 * Build Streamlit web application for real-time prediction
-* Improve accuracy using advanced models (e.g., BERT)
-* Add skill extraction and ranking
-* Implement resume-job matching
 
 ---
 
