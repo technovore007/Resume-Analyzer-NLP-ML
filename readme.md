@@ -30,6 +30,11 @@ This is a:
 * Total resumes: **2484**
 * Total categories: **24**
 
+The dataset used in this project is publicly available on Kaggle:
+
+**Resume Dataset**
+https://www.kaggle.com/datasets/snehaanbhawal/resume-dataset/data
+
 ### Features
 
 * `Final_Resume` — Cleaned resume text
@@ -46,7 +51,7 @@ ml-project/
 ├── resume_cleaned.csv
 │
 ├── notebook1_nlp.ipynb        # NLP preprocessing pipeline
-├── notebook2_ml.ipynb         # ML training and evaluation
+├── ResumeAnalyzer_ML.ipynb         # ML training and evaluation
 │
 ├── output/
 │   ├── model.pkl
